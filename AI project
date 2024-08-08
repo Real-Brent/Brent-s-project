@@ -58,6 +58,8 @@ DATASET=data/brain_mri_scan_images
 27. Run this command to see how it operates on an image from the positive folder.
 imagenet.py --model=$NET/resnet18.onnx --input_blob=input_0 --output_blob=output_0 --labels=$DATASET/labels.txt $DATASET/test/positive/39.jpg positive.jpg
 
+Video:
+https://youtu.be/zIs2nJhW0xk
 
 
 
