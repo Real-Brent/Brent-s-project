@@ -1,0 +1,64 @@
+#Identifying brain cancer using AI
+
+#The project uses imagenet to identify if a brain has brain cancer or not. I chose to do this because cancer has always been an important subject to me, and I have always had a great interest in it.
+When I got the oppurtunity to do this project I knew exactly what I had to do. I also knew this would be a nice way to show off what AI is capable of. Whne the AI looks at the image it says if it is
+positive for brain cancer or negative for brain cancer and it gives a percent showing how sure the AI is.
+
+#Algorithim 
+
+I made the AI able to identify the images by training them. I did this by getting the images from Kaggle and downloading them. I then created three folder, "test", "train", and "val". I put 80% of
+the images in "train" , 10% in test, and 10% in train, 10% in val. I then put the folders into VS code and started their training. The training took around 15 minutes and it trained 180 images. This
+is important to the real world because it can tell someone if they have brain cancer very quickley.
+
+#Running this project
+
+1. SSH into your Nano using VS code.
+2. Enter your password and make sure you are in a command line with Nano.
+3. Run this command to update your installer. You will have to enter your password.
+`sudo apt-get update`
+4. Run this command to install the cmake.
+`sudo apt-get install git cmake`
+5. You have to clone the jetson-inference project using this command.
+`git clone --recursive https://github.com/dusty-nv/jetson-inference`
+6. You have to move into your new jetson-inference folder.
+`cd jetson-inference`
+7. You then have to update the modules within the folder.
+`git submodule update --init`
+8. You then have to install the neccesary python packages by running this command, and then you have to enter the password.
+`sudo apt-get install libpython3-dev python3-numpy`
+9. You then have to make a build directory to build your project into. Make sure you are in jetson-inference directory.
+`mkdir build`
+10. You have to change the directories into build.
+`cd build`
+11. You have to run make to build the project
+`cmake ../`
+12. Once this finishes loading, you should see a space to run commands again in the terminal. Ensure you are still in the build directory. Run make to build the python files.
+`make`
+13. You then run sudo make install to install make.
+`sudo make install`
+14. You then configure it.
+`sudo ldconfig`
+15. Change directories into jetson-inference/python/training/classification/data
+16. Run this command to download the dataset.  
+`wget https://nvidia.box.com/shared/static/o577zd8yp3lmxf5zhm38svrbrv45am3y.gz -O brain_mri_scan_images.tar.gz`
+17. Run this command to unzip the file you downloaded. 
+`tar xvzf brain_mri_scan_images.gz`
+18. cd back to nvidia/jetson-inference/
+19. Once that has run and you're still back in the jetson-inference folder, run ./docker/run.sh to run the docker container. (You may have to re-enter your nvidia password at this step)
+20. From inside the Docker container, change directories so you are in jetson-inference/python/training/classification
+21. Run the training script to re-train the network where the model-dir argument is where the model should be saved and where the data is. This step could take hours.
+`python3 train.py --model-dir=models/brain_mri_scan_images data/brain_mri_scan_images`
+22. Look in the jetson-inference/python/training/classification/models/brain_mri_scan_images folder to see if there is a new model called resnet18.onnx there. That is your re-trained model!
+23. Exit the docker container by pressing Ctl + D.
+24. On your nano, navigate to the jetson-inference/python/training/classification directory.
+25. Use ls models/brain_mri_scan_images/ to make sure that the model is on the nano. You should see a file called resnet18.onnx.
+26. Set the NET and DATASET variables
+NET=models/brain_mri_scan_images
+DATASET=data/brain_mri_scan_images
+27. Run this command to see how it operates on an image from the positive folder.
+imagenet.py --model=$NET/resnet18.onnx --input_blob=input_0 --output_blob=output_0 --labels=$DATASET/labels.txt $DATASET/test/positive/39.jpg positive.jpg
+
+
+
+
+
